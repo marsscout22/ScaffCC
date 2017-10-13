@@ -158,10 +158,15 @@ Once you have all of the required libraries, simply run
 
 or
 
+        make DISABLE_STATIC=1
+
+or
+
         make USE_GCC=1
 
-at the root of the repository. The `USE_GCC` flag will force the
-Makefile to use GCC to compile instead, and this has been seen to be
+at the root of the repository. The `DISABLE_STATIC` flag will force the
+ Makefile to use boost, gmp, and mpfr's shared libraries, `USE_GCC` flag will
+ force the Makefile to use GCC to compile instead, and this has been seen to be
 faster on some systems.
 
 Verifying Installation
