@@ -48,8 +48,8 @@ Getting ScaffCC
 
            git clone https://github.com/ScaffCC/ScaffCC.git [dir]
            cd ScaffCC
-           git clone https://github.com/ScaffCC/scaff-llvm.git [dir]
-           git clone https://github.com/ScaffCC/scaff-clang.git [dir]
+           git clone https://github.com/ScaffCC/scaff-llvm.git llvm [dir]
+           git clone https://github.com/ScaffCC/scaff-clang.git clang [dir]
 
 3.  For the **OS X build**, download the repository:
 
