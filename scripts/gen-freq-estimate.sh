@@ -2,8 +2,8 @@
 
 DIR=$(dirname $0)
 ROOT=$DIR/..
-BIN=$ROOT/build/Release+Asserts/bin
-LIB=$ROOT/build/Release+Asserts/lib
+BIN=$ROOT/build/Debug+Asserts/bin
+LIB=$ROOT/build/Debug+Asserts/lib
 SCAF=$LIB/Scaffold.so
 OPT=$BIN/opt
 CLANG=$BIN/clang

@@ -6,7 +6,6 @@ CLANG_RELEASE="RELEASE_31/final"
 LLVM_URL="http://llvm.org/svn/llvm-project/llvm"
 CLANG_URL="http://llvm.org/svn/llvm-project/cfe"
 
-#CLANG=../build/Debug+Asserts/bin/clang++
 CLANG=g++
 
 # LDFLAGS is modified from `llvm-config --libs`
@@ -150,7 +149,6 @@ endif
 
 clean:
 	@cd Rotations/sqct && make clean
-	#cd scaffold && make clean
 	@if [ -d build ]; then cd build && make clean; fi
 
 .PHONY: clean Sqct Scaffold Clang

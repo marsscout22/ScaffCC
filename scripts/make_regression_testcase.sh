@@ -2,8 +2,8 @@
 
 DIR=$(dirname $0)
 ROOT=$DIR/..
-OPT=$ROOT/build/Release+Asserts/bin/opt
-SCAF=$ROOT/build/Release+Asserts/lib/Scaffold.so
+OPT=$ROOT/build/Debug+Asserts/bin/opt
+SCAF=$ROOT/build/Debug+Asserts/lib/Scaffold.so
 
 rm -rf $ROOT/test_cases
 mkdir $ROOT/test_cases

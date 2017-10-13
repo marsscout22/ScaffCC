@@ -2,8 +2,8 @@
 
 DIR=$(dirname $0)
 ROOT=$DIR/..
-OPT=$ROOT/build/Release+Asserts/bin/opt
-SCAF=$ROOT/build/Release+Asserts/lib/Scaffold.so
+OPT=$ROOT/build/Debug+Asserts/bin/opt
+SCAF=$ROOT/build/Debug+Asserts/lib/Scaffold.so
 
 # Create directory to put all byproduct and output files in
 for f in $*; do
@@ -22,7 +22,7 @@ for f in $*; do
     $ROOT/scaffold.sh -rk $f
     mv ${b}11.ll ${b}11.ll.keep_me
     # clean intermediary compilation files (comment out for speed)
-    $ROOT/scaffold.sh -ck $f
+    $ROOT/scaffold.sh -c $f
     # Keep the final output for the compilation
     mv ${b}11.ll.keep_me ${b}/${b}.ll
   fi
