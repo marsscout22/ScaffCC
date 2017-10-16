@@ -30,8 +30,8 @@ tags
 #==============================================================================#
 # No need to track the build directory
 build/
-# Clang/build is a soft link to build/
-clang/build
+llvm/
+clang/
 
 #==============================================================================#
 # Ignore test files in scaffold directory

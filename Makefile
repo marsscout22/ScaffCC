@@ -1,14 +1,3 @@
-SVN=/usr/bin/svn
-
-LLVM_RELEASE="RELEASE_31/final"
-CLANG_RELEASE="RELEASE_31/final"
-
-LLVM_URL="http://llvm.org/svn/llvm-project/llvm"
-CLANG_URL="http://llvm.org/svn/llvm-project/cfe"
-
-#CLANG=../build/Debug+Asserts/bin/clang++
-CLANG=g++
-
 # LDFLAGS is modified from `llvm-config --libs`
 # -- certain libs were not found for some reason or another...
 LDFLAGS=-lclangFrontend \
@@ -115,28 +104,17 @@ SCAFFOLD=scaffold
 
 all: Sqct Clang
 
-Clang: llvm build
+Clang:
+	@mkdir -p build
 	@cd llvm/tools && /bin/rm -f clang && /bin/ln -s ../../clang;
 	@cd clang && /bin/rm -f build && /bin/ln -s ../build;
-	@if [ -z $(USE_GCC) ]; then \
-		cd build && ../llvm/configure --disable-debug-symbols && make ; \
-	else \
-		mkdir -p build && cd build && ../llvm/configure --disable-debug-symbols CC=gcc CXX=g++ && make ; fi
+	@cd build && cmake ../llvm/ && make ;
 	@if [ -z `echo ${PATH} | grep ${PWD}/Debug+Asserts/bin` ]; then \
 		export PATH=${PATH}:${PWD}/Debug+Asserts/bin; \
 	else true; fi
 	@if [ -z `echo ${PATH} | grep ${PWD}/Debug+Asserts/bin` ]; then \
 		export PATH=${PATH}:${PWD}/Debug+Asserts/bin; \
 	else true; fi
-
-build: llvm
-	@mkdir -p build
-
-llvm:
-	@if [ ! -e $(SVN) ]; then \
-		echo "Please install Subversion: 'sudo apt-get install subversion'"; exit 2; \
-	else true; fi
-	@$(SVN) checkout --force $(LLVM_URL)/tags/$(LLVM_RELEASE) llvm;
 
 Scaffold:
 	@cd scaffold && make;
@@ -150,7 +128,6 @@ endif
 
 clean:
 	@cd Rotations/sqct && make clean
-	#cd scaffold && make clean
 	@if [ -d build ]; then cd build && make clean; fi
 
 .PHONY: clean Sqct Scaffold Clang

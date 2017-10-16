@@ -42,11 +42,14 @@ Installation
 Getting ScaffCC
 ---------------
 
-1.  Go to https://github.com/epiqc/ScaffCC
+1.  Go to https://github.com/ScaffCC
 
 2.  For the **Unix build**, download the repository:
 
-           git clone https://github.com/epiqc/ScaffCC.git [dir]
+           git clone https://github.com/ScaffCC/ScaffCC.git [dir]
+           cd ScaffCC
+           git clone https://github.com/ScaffCC/scaff-llvm.git llvm [dir]
+           git clone https://github.com/ScaffCC/scaff-clang.git clang [dir]
 
 3.  For the **OS X build**, download the repository:
 
@@ -160,14 +163,8 @@ or
 
         make DISABLE_STATIC=1
 
-or
-
-        make USE_GCC=1
-
 at the root of the repository. The `DISABLE_STATIC` flag will force the
- Makefile to use boost, gmp, and mpfr's shared libraries, `USE_GCC` flag will
- force the Makefile to use GCC to compile instead, and this has been seen to be
-faster on some systems.
+ Makefile to use boost, gmp, and mpfr's shared libraries.
 
 Verifying Installation
 ----------------------
