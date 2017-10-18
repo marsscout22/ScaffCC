@@ -2,7 +2,7 @@
 .SUFFIXES: .cpp .o
 
 CXX=g++
-CXXFLAGS=-fPIC -c -g -ggdb -O0 -std=c++0x
+CXXFLAGS=-fPIC -c -std=c++11
 CXXWARN=-Wextra -Wunreachable-code
 INC=-I/usr/include/boost
 

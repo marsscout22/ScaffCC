@@ -11,7 +11,7 @@ TOFF=0
 CTQG=0
 ROTATIONS=0
 
-BUILD=$(ROOT)/build/Release+Asserts
+BUILD=$(ROOT)/build
 
 SQCTPATH=$(ROOT)/Rotations/sqct/rotZ
 GRIDSYNTHPATH=$(ROOT)/Rotations/gridsynth/gridsynth
@@ -27,7 +27,7 @@ CC_FLAGS=-c -emit-llvm -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/lib
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-SCAFFOLD_LIB=$(ROOT)/build/Release+Asserts/lib/Scaffold.so
+SCAFFOLD_LIB=$(ROOT)/build/lib/LLVMScaffold.so
 endif
 ifeq ($(UNAME_S),Darwin)
 SCAFFOLD_LIB=$(ROOT)/build/Release+Asserts/lib/Scaffold.dylib
