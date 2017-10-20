@@ -92,11 +92,11 @@ $(FILE)1.ll: $(FILE).ll
 # Perform normal C++ optimization routines
 $(FILE)4.ll: $(FILE)1.ll
 	@echo "[Scaffold.makefile] O1 optimizations ..."
-	@$(OPT) -S $(FILE)1.ll -no-aa -tbaa -targetlibinfo -basicaa -o $(FILE)1a.ll > /dev/null
+	@$(OPT) -S $(FILE)1.ll -scoped-noalias -tbaa -targetlibinfo -basicaa -o $(FILE)1a.ll > /dev/null
 	@$(OPT) -S $(FILE)1a.ll -simplifycfg -domtree -o $(FILE)1b.ll > /dev/null
 	@$(OPT) -S $(FILE)1b.ll -early-cse -lower-expect -o $(FILE)2.ll > /dev/null
-	@$(OPT) -S $(FILE)2.ll -targetlibinfo -no-aa -tbaa -basicaa -globalopt -ipsccp -o $(FILE)3.ll > /dev/null
-	@$(OPT) -S $(FILE)3.ll -instcombine -simplifycfg -basiccg -prune-eh -always-inline -functionattrs -domtree -early-cse -lazy-value-info -jump-threading -correlated-propagation -simplifycfg -instcombine -tailcallelim -simplifycfg -reassociate -domtree -loops -loop-simplify -lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine -scalar-evolution -loop-simplify -lcssa -iv-users -indvars -loop-idiom -loop-deletion -loop-unroll -memdep -memcpyopt -sccp -instcombine -lazy-value-info -jump-threading -correlated-propagation -domtree -memdep -dse -adce -simplifycfg -instcombine -strip-dead-prototypes -preverify -domtree -verify -o $(FILE)4.ll > /dev/null
+	@$(OPT) -S $(FILE)2.ll -targetlibinfo -scoped-noalias -tbaa -basicaa -globalopt -ipsccp -o $(FILE)3.ll > /dev/null
+	@$(OPT) -S $(FILE)3.ll -instcombine -simplifycfg -basiccg -prune-eh -always-inline -functionattrs -domtree -early-cse -lazy-value-info -jump-threading -correlated-propagation -simplifycfg -instcombine -tailcallelim -simplifycfg -reassociate -domtree -loops -loop-simplify -lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine -scalar-evolution -loop-simplify -lcssa -iv-users -indvars -loop-idiom -loop-deletion -loop-unroll -memdep -memcpyopt -sccp -instcombine -lazy-value-info -jump-threading -correlated-propagation -domtree -memdep -dse -adce -simplifycfg -instcombine -strip-dead-prototypes -domtree -verify -o $(FILE)4.ll > /dev/null
 
 # Perform loop unrolling until completely unrolled, then remove dead code
 #
@@ -119,7 +119,7 @@ $(FILE)6.ll: $(FILE)4.ll
 		echo "[Scaffold.makefile] Dead Argument Elimination ($$UCNT) ..." && \
 		$(OPT) -S -deadargelim $(FILE)5a.ll -o $(FILE)6tmp.ll > /dev/null; \
 	done && \
-	$(OPT) -S $(FILE)6tmp.ll -internalize -globaldce -adce -o $(FILE)6.ll > /dev/null  
+	$(OPT) -S $(FILE)6tmp.ll -globaldce -adce -o $(FILE)6.ll > /dev/null
 	
 
 # Perform Rotation decomposition if requested and rotation decomp tool is built
@@ -139,7 +139,7 @@ $(FILE)7.ll: $(FILE)6.ll
 # Remove any code that is useless after optimizations
 $(FILE)8.ll: $(FILE)7.ll
 	@echo "[Scaffold.makefile] Internalizing and Removing Unused Functions ..."
-	@$(OPT) -S $(FILE)7.ll -internalize -globaldce -deadargelim -o $(FILE)8.ll > /dev/null
+	@$(OPT) -S $(FILE)7.ll -globaldce -deadargelim -o $(FILE)8.ll > /dev/null
 
 # Compile RKQC 
 $(FILE)9.ll: $(FILE)8.ll

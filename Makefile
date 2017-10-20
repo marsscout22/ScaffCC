@@ -92,10 +92,10 @@ LDFLAGS=-lclangFrontend \
 		-lLLVMCore \
 		-lLLVMSupport
 
-CLANGFLAGS=`../build/Debug+Asserts/bin/llvm-config --cxxflags --ldflags`
+CLANGFLAGS=`../build/bin/llvm-config --cxxflags --ldflags`
 
-CFLAGS=-L ../build/Debug+Asserts/lib \
-		-I`../build/Debug+Asserts/bin/llvm-config --includedir` \
+CFLAGS=-L ../build/lib \
+		-I`../build/bin/llvm-config --includedir` \
 		-I ../llvm/tools/clang/include \
 		-I ../build/include \
 		-I ../build/tools/clang/include
@@ -108,12 +108,12 @@ Clang:
 	@mkdir -p build
 	@cd llvm/tools && /bin/rm -f clang && /bin/ln -s ../../clang;
 	@cd clang && /bin/rm -f build && /bin/ln -s ../build;
-	@cd build && cmake ../llvm/ -DCMAKE_BUILD_TYPE=Release  && make ;
-	@if [ -z `echo ${PATH} | grep ${PWD}/Debug+Asserts/bin` ]; then \
-		export PATH=${PATH}:${PWD}/Debug+Asserts/bin; \
+	@cd build && cmake ../llvm/ -DCMAKE_BUILD_TYPE=Release && make ;
+	@if [ -z `echo ${PATH} | grep ${PWD}/bin` ]; then \
+		export PATH=${PATH}:${PWD}/bin; \
 	else true; fi
-	@if [ -z `echo ${PATH} | grep ${PWD}/Debug+Asserts/bin` ]; then \
-		export PATH=${PATH}:${PWD}/Debug+Asserts/bin; \
+	@if [ -z `echo ${PATH} | grep ${PWD}/bin` ]; then \
+		export PATH=${PATH}:${PWD}/bin; \
 	else true; fi
 
 Scaffold:
