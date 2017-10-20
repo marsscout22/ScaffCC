@@ -23,7 +23,7 @@ OPTIMIZE=0
 CC=$(BUILD)/bin/clang
 OPT=$(BUILD)/bin/opt
 
-CC_FLAGS=-c -emit-llvm -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I$(DIRNAME)
+CC_FLAGS=-c -emit-llvm -I/usr/include -I/usr/lib/gcc/x86_64-redhat-linux/6.4.1/include -I$(DIRNAME)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -84,6 +84,7 @@ $(FILE)_merged.scaffold: $(FILENAME)
 $(FILE).ll: $(FILE)_merged.scaffold
 	@echo "[Scaffold.makefile] Compiling $(FILE)_merged.scaffold ..."
 	@$(CC) $(FILE)_merged.scaffold $(CC_FLAGS) -o $(FILE).ll
+	@$(CC) -cc1 -ast-dump $(FILE)_merged.scaffold > $(FILE).ast
 
 $(FILE)1.ll: $(FILE).ll
 	@echo "[Scaffold.makefile] Transforming cbits ..."
