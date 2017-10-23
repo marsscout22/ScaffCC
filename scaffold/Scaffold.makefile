@@ -184,7 +184,7 @@ $(FILE)_qasm.scaffold: $(FILE).qasmh
 
 # Compile C++
 $(FILE)_qasm: $(FILE)_qasm.scaffold
-	@$(CC) $(FILE)_qasm.scaffold -o $(FILE)_qasm
+	@$(CC) -g $(FILE)_qasm.scaffold -o $(FILE)_qasm
 
 # Generate flattened QASM 
 $(FILE).qasmf: $(FILE)12.ll
@@ -192,7 +192,7 @@ $(FILE).qasmf: $(FILE)12.ll
 	@$(OPT) -S -load $(SCAFFOLD_LIB) -FlattenModule $(FILE)12.ll -o $(FILE)12.inlined.ll 2> /dev/null
 	@$(OPT) -load $(SCAFFOLD_LIB) -gen-qasm $(FILE)12.inlined.ll 2> $(FILE).qasmh > /dev/null
 	@$(PYTHON) $(ROOT)/scaffold/flatten-qasm.py $(FILE).qasmh
-	@$(CC) $(FILE)_qasm.scaffold -o $(FILE)_qasm
+	@$(CC) -g $(FILE)_qasm.scaffold -o $(FILE)_qasm
 	@./$(FILE)_qasm > $(FILE).tmp
 	@cat fdecl.out $(FILE).tmp > $(FILE).qasmf
 	@echo "[Scaffold.makefile] Flat QASM written to $(FILE).qasmf ..."    
