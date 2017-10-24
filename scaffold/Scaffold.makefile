@@ -23,7 +23,7 @@ OPTIMIZE=0
 CC=$(BUILD)/bin/clang
 OPT=$(BUILD)/bin/opt
 
-CC_FLAGS=-c -emit-llvm -I/usr/include -I/usr/lib/gcc/x86_64-redhat-linux/6.4.1/include -I$(DIRNAME)
+CC_FLAGS=-Xclang -disable-O0-optnone -c -emit-llvm -I/usr/include -I/usr/lib/gcc/x86_64-redhat-linux/6.4.1/include -I$(DIRNAME)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
