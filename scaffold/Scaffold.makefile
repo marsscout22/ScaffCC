@@ -23,7 +23,7 @@ OPTIMIZE=0
 CC=$(BUILD)/bin/clang
 OPT=$(BUILD)/bin/opt
 
-CC_FLAGS=-Xclang -disable-O0-optnone -S -emit-llvm -I/usr/include -I/usr/lib/gcc/x86_64-redhat-linux/6.4.1/include -I$(DIRNAME)
+CC_FLAGS=-Xclang -disable-O0-optnone -v -S -emit-llvm -I$(DIRNAME)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -84,7 +84,6 @@ $(FILE)_merged.scaffold: $(FILENAME)
 $(FILE).ll: $(FILE)_merged.scaffold
 	@echo "[Scaffold.makefile] Compiling $(FILE)_merged.scaffold ..."
 	@$(CC) $(FILE)_merged.scaffold $(CC_FLAGS) -o $(FILE).ll
-	@$(CC) -cc1 -ast-dump $(FILE)_merged.scaffold > $(FILE).ast
 
 $(FILE)1.ll: $(FILE).ll
 	@echo "[Scaffold.makefile] Transforming cbits ..."
@@ -93,10 +92,10 @@ $(FILE)1.ll: $(FILE).ll
 # Perform normal C++ optimization routines
 $(FILE)4.ll: $(FILE)1.ll
 	@echo "[Scaffold.makefile] O1 optimizations ..."
-	@$(OPT) -S $(FILE)1.ll -scoped-noalias -tbaa -targetlibinfo -basicaa -o $(FILE)1a.ll > /dev/null
+	@$(OPT) -S $(FILE)1.ll -tbaa -targetlibinfo -basicaa -o $(FILE)1a.ll > /dev/null
 	@$(OPT) -S $(FILE)1a.ll -simplifycfg -domtree -o $(FILE)1b.ll > /dev/null
 	@$(OPT) -S $(FILE)1b.ll -early-cse -lower-expect -o $(FILE)2.ll > /dev/null
-	@$(OPT) -S $(FILE)2.ll -targetlibinfo -scoped-noalias -tbaa -basicaa -globalopt -ipsccp -o $(FILE)3.ll > /dev/null
+	@$(OPT) -S $(FILE)2.ll -targetlibinfo -tbaa -basicaa -globalopt -ipsccp -o $(FILE)3.ll > /dev/null
 	@$(OPT) -S $(FILE)3.ll -instcombine -simplifycfg -basiccg -prune-eh -always-inline -functionattrs -domtree -early-cse -lazy-value-info -jump-threading -correlated-propagation -simplifycfg -instcombine -tailcallelim -simplifycfg -reassociate -domtree -loops -loop-simplify -lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine -scalar-evolution -loop-simplify -lcssa -iv-users -indvars -loop-idiom -loop-deletion -loop-unroll -memdep -memcpyopt -sccp -instcombine -lazy-value-info -jump-threading -correlated-propagation -domtree -memdep -dse -adce -simplifycfg -instcombine -strip-dead-prototypes -domtree -verify -o $(FILE)4.ll > /dev/null
 
 # Perform loop unrolling until completely unrolled, then remove dead code
@@ -120,7 +119,7 @@ $(FILE)6.ll: $(FILE)4.ll
 		echo "[Scaffold.makefile] Dead Argument Elimination ($$UCNT) ..." && \
 		$(OPT) -S -deadargelim $(FILE)5a.ll -o $(FILE)6tmp.ll > /dev/null; \
 	done && \
-	$(OPT) -S $(FILE)6tmp.ll -globaldce -adce -o $(FILE)6.ll > /dev/null
+	$(OPT) -S $(FILE)6tmp.ll -internalize -globaldce -adce -o $(FILE)6.ll > /dev/null
 	
 
 # Perform Rotation decomposition if requested and rotation decomp tool is built
@@ -140,7 +139,7 @@ $(FILE)7.ll: $(FILE)6.ll
 # Remove any code that is useless after optimizations
 $(FILE)8.ll: $(FILE)7.ll
 	@echo "[Scaffold.makefile] Internalizing and Removing Unused Functions ..."
-	@$(OPT) -S $(FILE)7.ll -globaldce -deadargelim -o $(FILE)8.ll > /dev/null
+	@$(OPT) -S $(FILE)7.ll -internalize -globaldce -deadargelim -o $(FILE)8.ll > /dev/null
 
 # Compile RKQC 
 $(FILE)9.ll: $(FILE)8.ll
@@ -184,7 +183,7 @@ $(FILE)_qasm.scaffold: $(FILE).qasmh
 
 # Compile C++
 $(FILE)_qasm: $(FILE)_qasm.scaffold
-	@$(CC) -g $(FILE)_qasm.scaffold -o $(FILE)_qasm
+	@$(CC) -O3 $(FILE)_qasm.scaffold -o $(FILE)_qasm
 
 # Generate flattened QASM 
 $(FILE).qasmf: $(FILE)12.ll
@@ -192,7 +191,7 @@ $(FILE).qasmf: $(FILE)12.ll
 	@$(OPT) -S -load $(SCAFFOLD_LIB) -FlattenModule $(FILE)12.ll -o $(FILE)12.inlined.ll 2> /dev/null
 	@$(OPT) -load $(SCAFFOLD_LIB) -gen-qasm $(FILE)12.inlined.ll 2> $(FILE).qasmh > /dev/null
 	@$(PYTHON) $(ROOT)/scaffold/flatten-qasm.py $(FILE).qasmh
-	@$(CC) -g $(FILE)_qasm.scaffold -o $(FILE)_qasm
+	@$(CC) -O3 $(FILE)_qasm.scaffold -o $(FILE)_qasm
 	@./$(FILE)_qasm > $(FILE).tmp
 	@cat fdecl.out $(FILE).tmp > $(FILE).qasmf
 	@echo "[Scaffold.makefile] Flat QASM written to $(FILE).qasmf ..."    
