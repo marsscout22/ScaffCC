@@ -28,7 +28,7 @@ function show_help {
 }
 
 function show_version {
-    echo "Scaffold - git"
+    echo "Scaffold - release_60"
 }
 
 # Parse opts
