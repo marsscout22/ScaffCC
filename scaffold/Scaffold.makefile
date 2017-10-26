@@ -162,7 +162,8 @@ $(FILE)11.ll: $(FILE)9.ll
 # Insert reverse functions if REVERSE is 1
 $(FILE)12.ll: $(FILE)11.ll
 	@echo "[Scaffold.makefile] Inserting Reverse Functions..."
-	@$(OPT) -S -load $(SCAFFOLD_LIB) -FunctionReverse $(FILE)11.ll -o $(FILE)12.ll > /dev/null
+	@$(OPT) -S -load $(SCAFFOLD_LIB) -FunctionReverse $(FILE)11.ll -o $(FILE)12tmp.ll > /dev/null
+	@$(OPT) -S -internalize -globaldce $(FILE)12tmp.ll -o $(FILE)12.ll > /dev/null
 
 # Generate resource counts from final LLVM output
 $(FILE).resources: $(FILE)12.ll

@@ -8,6 +8,7 @@ rkqc allLibraryFuncs(qbit a[32]) {
     a_eq_a_plus_b(a[i + 1], a[i], 1);
   }
 }
+
 rkqc test1() {
   qbit h0[32];
   allLibraryFuncs(h0);
