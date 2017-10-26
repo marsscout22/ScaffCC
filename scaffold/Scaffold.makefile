@@ -188,7 +188,7 @@ $(FILE)_qasm: $(FILE)_qasm.scaffold
 # Generate flattened QASM 
 $(FILE).qasmf: $(FILE)12.ll
 	@echo "[Scaffold.makefile] Flattening modules ..." 
-	@$(OPT) -S -load $(SCAFFOLD_LIB) -FlattenModule $(FILE)12.ll -o $(FILE)12.inlined.ll 2> /dev/null
+	@$(OPT) -S -load $(SCAFFOLD_LIB) -FlattenModule -all 1 $(FILE)12.ll -o $(FILE)12.inlined.ll 2> /dev/null
 	@$(OPT) -load $(SCAFFOLD_LIB) -gen-qasm $(FILE)12.inlined.ll 2> $(FILE).qasmh > /dev/null
 	@$(PYTHON) $(ROOT)/scaffold/flatten-qasm.py $(FILE).qasmh
 	@$(CC) -O3 $(FILE)_qasm.scaffold -o $(FILE)_qasm
