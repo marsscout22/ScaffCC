@@ -12,55 +12,7 @@
 * Recent Update: Based on https://qcs.ornl.gov/trac/qcs-scaffold/ticket/3
 *****************************************************************************************/
 
-/**********************************************************
-* external files to include
-* gates.h includes commonly used gates, including Toffoli
-**********************************************************/
-//#include "gates.h"
-#include "math.h"
-//#include "TFP_Oracle.scaffold"
-
-/**********************************************
-* Global variables
-**********************************************/
-/*
-#define n  15
-#define N  32768	// N = 2 ^ n
-#define r  9  		// r = (3/5)n
-#define R  512		// R = 2 ^ r
-#define RR1 130816	// RR1 = R(R-1)/2
-#define rbar  6		// rbar = (2/5)n
-#define Rbar  64	// Rbar = 2^rbar
-#define CTR  11		// CRT = 2*rbar - 1
-#define tm 64 		// Quantum walk iterations (floor of N/R)
-#define tw 22		// Quantum walk step iterations (floor of sqrt(R))
-#define tg  142 	// Grover iteration (pi/4)* (Sqrt(N))
-#define tbarm 8		// R/Rbar
-#define tbarw 8		// GFI originally had sqrt(R) but now changed to
-sqrt(Rbar)
-#define cn 31		// cn = 2*n + 1
-*/
-
-/**********************************************
-* Reduced Problem Size
-**********************************************/
-/*
-#define n  10
-#define N  1024	// N = 2 ^ n
-#define r  6  		// r = (3/5)n
-#define R  64		// R = 2 ^ r
-#define RR1 504	// RR1 = R(R-1)/2
-#define rbar  4		// rbar = (2/5)n
-#define Rbar  16	// Rbar = 2^rbar
-#define CTR  7		// CRT = 2*rbar - 1
-#define tm 16 		// Quantum walk iterations (floor of N/R)
-#define tw 8		// Quantum walk step iterations (floor of sqrt(R))
-#define tg  24 	// Grover iteration (pi/4)* (Sqrt(N))
-#define tbarm 4		// R/Rbar
-#define tbarw 4		// GFI originally had sqrt(R) but now changed to
-sqrt(Rbar)
-#define cn 21		// cn = 2*n + 1
-*/
+#include <math.h>
 
 /**********************************************
 * Further Reduced Problem Size
@@ -83,36 +35,6 @@ sqrt(Rbar)
 
 // Define globals first to propagate
 #include "TFP_Oracle.scaffold"
-
-/**************************************************************
-*	Data Structures : used in the Main Program
-**************************************************************/
-/*
-qstruct quNode
-{ qbit reg[n];
-};
-*/
-
-/*
-qstruct quIntr
-{ qbit reg[r];
-};
-*/
-
-/*
-qstruct GCQWRegs
-{
-        qbit  tau[r][Rbar];
-        qbit  sigma[r];
-        qbit  iota[rbar];
-        qbit  Ew[Rbar];
-        qbit  cTri[2*rbar-1];
-        //qubit holding test results for the triangle in T
-        qbit  triTestT[1];
-        //qubit holding test results for the triangle in T and w
-        qbit  triTestTw[1];
-};
-*/
 
 /**************************************************************
 * External module : the Oracle
@@ -1536,11 +1458,6 @@ qmodule InvTestTriangleEdges(qbit T[R * n], qbit E[RR1], qbit w[n],
   TriangleTestT(E, triTestT);
 }
 
-/********************************************************************
-*	Algorithm 1: QWTFP (the core module that summons other modules)
-*	Return:  Yes/No if the graph has a triangle
-********************************************************************/
-// qmodule QWTFP(int ret[n], int res[R][n], int fin[RR1], int *testTMeasure)
 int main() {
   cbit testTMeasure[1];
   cbit ret[n];

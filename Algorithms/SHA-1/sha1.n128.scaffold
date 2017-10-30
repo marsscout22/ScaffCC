@@ -350,9 +350,10 @@ rkqc encrypt() {
   }
   for (i = 16; i < 80; i++) {
     for (j = 0; j < 32; j++) {
-      temp_W1[j] = W[(i - 3) * 32 + j] temp_W2[j] =
-          W[(i - 8) * 32 + j] temp_W3[j] = W[(i - 14) * 32 + j] temp_W4[j] =
-              W[(i - 16) * 32 + j]
+      temp_W1[j] = W[(i - 3) * 32 + j];
+      temp_W2[j] = W[(i - 8) * 32 + j];
+      temp_W3[j] = W[(i - 14) * 32 + j];
+      temp_W4[j] = W[(i - 16) * 32 + j];
     }
 
     XOR(temp2, temp_W1, temp_W2);
