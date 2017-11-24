@@ -1,3 +1,6 @@
+CC=clang
+CXX=clang++
+
 # LDFLAGS is modified from `llvm-config --libs`
 # -- certain libs were not found for some reason or another...
 LDFLAGS=-lclangFrontend \
@@ -108,7 +111,7 @@ Clang:
 	@mkdir -p build
 	@cd llvm/tools && /bin/rm -f clang && /bin/ln -s ../../clang;
 	@cd clang && /bin/rm -f build && /bin/ln -s ../build;
-	@cd build && cmake ../llvm/ -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=ON && make ;
+	@cd build && cmake ../llvm/ -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=ON -DCMAKE_C_COMPILER=$(CC) -DCMAKE_CXX_COMPILER=$(CXX) && make ;
 	@if [ -z `echo ${PATH} | grep ${PWD}/bin` ]; then \
 		export PATH=${PATH}:${PWD}/bin; \
 	else true; fi
@@ -121,9 +124,9 @@ Scaffold:
 
 Sqct:
 ifdef DISABLE_STATIC
-	@cd Rotations/sqct && make DISABLE_STATIC=1
+	@cd Rotations/sqct && make DISABLE_STATIC=1 CC=$(CC) CXX=$(CXX)
 else
-	@cd Rotations/sqct && make
+	@cd Rotations/sqct && make CC=$(CC) CXX=$(CXX)
 endif
 
 clean:
