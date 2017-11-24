@@ -164,7 +164,7 @@ or
         make DISABLE_STATIC=1
 
 at the root of the repository. The `DISABLE_STATIC` flag will force the
- Makefile to use boost, gmp, and mpfr's shared libraries.
+ Makefile to use boost, gmp, and mpfr's shared libraries and build with clang.
 
 Verifying Installation
 ----------------------
