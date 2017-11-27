@@ -17,9 +17,9 @@ Current Release
 
 ScaffCC is currently in an *alpha* release. Specifically, the release details are:
 
--   Version 6.0
+-   Version 3.0
 
--   Release Date: August, 2018 (Follow LLVM Release Schedule)
+-   Release Date: Release Date: August, 2017
 
 -   Release Note: The current version is still an alpha release. Multiple new features are in active developement. For instance, .qasmf formart conforming to standardized QASM and optimization to parallel scheduler are expected to be included in the near term.
 

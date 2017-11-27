@@ -28,7 +28,7 @@ function show_help {
 }
 
 function show_version {
-    echo "Scaffold - release_60"
+    echo "Scaffold - Release 3.0 (Aug 1, 2017) Alpha"
 }
 
 # Parse opts
